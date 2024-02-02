@@ -1,34 +1,87 @@
-
-
 <script>
-    import PieChart from './PieChart.svelte';
-      import * as d3 from 'd3';
-    
-      export let data = [10,20,30,40,50];
-      export let width = 640;
-      export let height = 400;
-      export let marginTop = 20;
-      export let marginRight = 20;
-      export let marginBottom = 30;
-      export let marginLeft = 40;
-    
-      let gx;
-      let gy;
-    
-      $: x = d3.scaleLinear([0, data.length - 1], [marginLeft, width - marginRight]);
-      $: y = d3.scaleLinear(d3.extent(data), [height - marginBottom, marginTop]);
-      $: line = d3.line((d, i) => x(i), y);
-      $: d3.select(gy).call(d3.axisLeft(y));
-      $: d3.select(gx).call(d3.axisBottom(x));
-    </script>
-    <svg width={width} height={height}>
-      <g bind:this={gx} transform="translate(0,{height - marginBottom})" />
-      <g bind:this={gy} transform="translate({marginLeft},0)" />
-      <path fill="none" stroke="currentColor" stroke-width="1.5" d={line(data)} />
-      <g fill="white" stroke="currentColor" stroke-width="1.5">
-        {#each data as d, i}
-          <circle key={i} cx={x(i)} cy={y(d)} r="2.5" />
-        {/each}
-      </g>
-    </svg>
-    <!-- <PieChart/> -->
+	import * as d3 from "d3";
+	
+	// Receive plot data as prop.
+  export let data;
+	
+	// Specify the chart’s dimensions.
+	const width = 928;
+  const height = 500;
+
+  // Create the color scale.
+  const colourScale = d3.scaleOrdinal()
+		.domain(data.map(d => d.name))
+		.range(d3.quantize(t => d3.interpolateSpectral(t * 0.8 + 0.1), data.length).reverse())
+
+  // Create the pie layout and arc generator.
+  const pie = d3.pie()
+		.sort(null)
+		.value(d => d.value);
+
+  const arcPath = d3.arc()
+		// control the style of the pie slices;
+		// try changing the inner radius to 100 to see what happens
+		.innerRadius(0)
+		.outerRadius(Math.min(width, height) / 2 - 1);
+
+  const labelRadius = arcPath.outerRadius()() * 0.8;
+
+  // A separate arc generator for labels.
+  const arcLabel = d3.arc()
+		.innerRadius(labelRadius)
+		.outerRadius(labelRadius);
+
+  const arcs = pie(data);
+  
+</script>
+
+<svg
+  {width}
+  {height}
+  viewBox="{-width / 2}, {-height / 2}, {width}, {height}"
+  style:max-width="100%"
+  style:height="auto"
+>
+
+	<g class="data">
+
+		<!-- Loop through the data-slices. -->
+		{#each arcs as slice}
+			
+			<!-- Add each pie-slice. -->
+			<path 
+				d={arcPath(slice)}
+				fill={colourScale(slice.data.name)}
+				stroke="white"
+				/>
+
+			<!-- Add each label. -->
+			<text
+				style="font-weight: bold"
+				transform="translate({arcLabel.centroid(slice)})"
+				text-anchor="middle"
+				>
+				{slice.data.name}
+			</text>
+			
+			<!-- show the value if there is enough room. -->
+			{#if (slice.endAngle - slice.startAngle) > 0.25}
+				<text
+					text-anchor="middle"
+					transform="translate({[arcLabel.centroid(slice)[0], arcLabel.centroid(slice)[1] + 10]})"
+					>
+					{slice.data.value.toLocaleString("en-US")}
+				</text>
+			{/if}
+		{/each}
+	</g>
+</svg>
+
+<style>
+	svg {
+		font-size: 10px;
+	}
+	aside {
+		text-align: center;
+	}
+</style>

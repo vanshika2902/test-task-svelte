@@ -9,8 +9,8 @@
 </script>
 
 <section>
- <aside id="separator-sidebar" class="fixed top-[4rem] left-0 z-40 w-70 h-screen transition-transform -translate-x-full sm:translate-x-0" aria-label="Sidebar">
-    <div class="h-full px-3 py-4 overflow-y-auto bg-blue-700 ">
+   <aside id="separator-sidebar" class="fixed mt-[4rem] left-0 z-40 w-70 h-screen transition-transform sm:w-70 sm:max-w-xs sm:translate-x-0">
+      <div class="h-full px-3 py-4 overflow-y-auto bg-blue-500 ">
         <div class="home">
             <a href="#" class="flex items-center p-2 text-gray-50 rounded-lg dark:text-white hover:text-gray-300 dark:hover:text-gray-700 group">
                 <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 24 24" width={25} stroke="currentColor" class="w-6 h-6">

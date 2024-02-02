@@ -5,15 +5,15 @@
 
 <header >
   <nav>
-    <div class="navbar bg-gray-900 flex flex-row justify-between fixed ">
+    <div class="navbar bg-white flex flex-row justify-between fixed ">
       <div class="logo">
-        <a class="text-white text-xl">Wiki.js</a>
+        <a class="text-black text-xl">Wiki.js</a>
       </div>
       <div class="form-control hidden md:block">
         <input
           type="text"
           placeholder="Search"
-          class="input input-bordered w-[50rem] bg-gray-800 text-white"
+          class="input input-bordered w-[50rem] bg-gray-200 text-black"
         />
       </div>
       <div
@@ -27,7 +27,7 @@
               viewBox="0 0 24 24"
               stroke-width="1.5"
               stroke="currentColor"
-              class="w-8 h-8 text-gray-200"
+              class="w-8 h-8 text-gray-500"
             >
               <path
                 stroke-linecap="round"
@@ -51,7 +51,7 @@
                 viewBox="0 0 24 24"
                 stroke-width="1.5"
                 stroke="currentColor"
-                class="w-8 h-8 text-gray-200"
+                class="w-8 h-8 text-gray-500"
               >
                 <path
                   stroke-linecap="round"
